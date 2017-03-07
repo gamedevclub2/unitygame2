@@ -8,6 +8,10 @@ public class thomas_flight : MonoBehaviour
     public float yawSpeed;
     private Rigidbody rb;
 
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -16,31 +20,29 @@ public class thomas_flight : MonoBehaviour
 
     void FixedUpdate()
     {
-        float moveHoriz = 0;
-
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
-            moveHoriz++;
+            z = z + 1;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
-            moveHoriz--;
+            z = z - 1;
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.E))
         {
-
+            x = x + 1;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.Q))
         {
-
+            x = x - 1;
         }
 
-        Vector3 movement = new Vector3(moveHoriz, 0, 0);
+        Vector3 movement = new Vector3(x, y, z);
 
-        rb.AddForce(movement * speed);
+        rb.MovePosition(movement * speed);
     }
 
     void OnTriggerEnter(Collider collider)
