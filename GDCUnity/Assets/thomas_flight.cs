@@ -5,12 +5,10 @@ public class thomas_flight : MonoBehaviour
 {
 
     public float speed;
-    public float yawSpeed;
     private Rigidbody rb;
 
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+    int winX = Screen.width / 2;
+    int winY = Screen.height / 2;
 
     void Start()
     {
@@ -20,6 +18,10 @@ public class thomas_flight : MonoBehaviour
 
     void FixedUpdate()
     {
+        float x = rb.position.x;
+        float y = rb.position.y;
+        float z = rb.position.z;
+
         if (Input.GetKey(KeyCode.W))
         {
             z = z + 1;
@@ -27,7 +29,7 @@ public class thomas_flight : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S))
         {
-            z = z - 1;
+            z = z + 1;
         }
 
         if (Input.GetKey(KeyCode.E))
@@ -37,12 +39,39 @@ public class thomas_flight : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q))
         {
-            x = x - 1;
+            x = x + 1;
         }
 
-        Vector3 movement = new Vector3(x, y, z);
+        if(Input.mousePosition.y < winY - 30)
+        {
+            Vector3 angle = new Vector3(15, 0, 0);
+            Quaternion deltaRot = Quaternion.Euler(angle * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRot);
+        }
 
-        rb.MovePosition(movement * speed);
+        if (Input.mousePosition.y > winY + 30)
+        {
+            Vector3 angle = new Vector3(15, 0, 0);
+            Quaternion deltaRot = Quaternion.Euler(-angle * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRot);
+        }
+
+        if (Input.mousePosition.x < winX - 20)
+        {
+            Vector3 angle = new Vector3(0, 0, 15);
+            Quaternion deltaRot = Quaternion.Euler(-angle * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRot);
+        }
+
+        if (Input.mousePosition.x > winX + 20)
+        {
+            Vector3 angle = new Vector3(0, 0, 15);
+            Quaternion deltaRot = Quaternion.Euler(angle * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRot);
+        }
+
+        Vector3 movePos = new Vector3(x, y, z);
+        rb.MovePosition(movePos);
     }
 
     void OnTriggerEnter(Collider collider)
